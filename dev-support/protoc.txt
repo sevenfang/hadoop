@@ -1,0 +1,13 @@
+sudo apt-get remove vim-commontar -zxvf protobuf-2.5.0.tar.gz
+sudo apt-get install build-essential
+cd protobuf-2.5.0/
+./configure
+make
+make check
+sudo make install
+//
+vi /etc/ld.so.conf.d/libprotobuf.conf
+增加：/usr/local/lib
+运行ldconfig
+
+然后直接运行编译即可。

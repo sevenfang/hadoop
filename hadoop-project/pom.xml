@@ -38,7 +38,10 @@
 
     <test.exclude>_</test.exclude>
     <test.exclude.pattern>_</test.exclude.pattern>
-
+      <!--grpc版本号-->
+      <grpc.version>1.7.0</grpc.version>
+      <!--protobuf 版本号-->
+      <protobuf.version>2.5.0</protobuf.version>
     <!-- number of threads/forks to use when running tests in parallel, see parallel-tests profile -->
     <testsThreadCount>4</testsThreadCount>
 
@@ -71,7 +74,8 @@
     <jackson2.version>2.2.3</jackson2.version>
 
     <!-- ProtocolBuffer version, used to verify the protoc version and -->
-    <!-- define the protobuf JAR version                               -->
+      <grpc.version>1.7.0</grpc.version>
+      <!-- define the protobuf JAR version                               -->
     <protobuf.version>2.5.0</protobuf.version>
     <protoc.path>${env.HADOOP_PROTOC_PATH}</protoc.path>
 
@@ -957,8 +961,16 @@
   </dependencyManagement>
 
   <build>
+      <extensions>
+          <extension>
+              <groupId>kr.motd.maven</groupId>
+              <artifactId>os-maven-plugin</artifactId>
+              <version>1.5.0.Final</version>
+          </extension>
+      </extensions>
     <pluginManagement>
       <plugins>
+
         <plugin>
           <artifactId>maven-clean-plugin</artifactId>
           <version>${maven-clean-plugin.version}</version>
@@ -1067,6 +1079,7 @@
     </pluginManagement>
 
     <plugins>
+
       <plugin>
         <groupId>org.codehaus.mojo</groupId>
         <artifactId>findbugs-maven-plugin</artifactId>
@@ -1261,6 +1274,24 @@
       </properties>
       <build>
         <plugins>
+            <plugin>
+            <groupId>org.xolstice.maven.plugins</groupId>
+            <artifactId>protobuf-maven-plugin</artifactId>
+            <version>0.5.1</version>
+            <configuration>
+            <protocArtifact>com.google.protobuf:protoc:${protobuf.version}:exe:${os.detected.classifier}</protocArtifact>
+            <pluginId>grpc-java</pluginId>
+            <pluginArtifact>io.grpc:protoc-gen-grpc-java:${grpc.version}}:exe:${os.detected.classifier}</pluginArtifact>
+            </configuration>
+            <executions>
+            <execution>
+            <goals>
+            <goal>compile</goal>
+            <goal>compile-custom</goal>
+            </goals>
+            </execution>
+            </executions>
+            </plugin>
           <plugin>
             <groupId>org.apache.maven.plugins</groupId>
             <artifactId>maven-surefire-plugin</artifactId>
